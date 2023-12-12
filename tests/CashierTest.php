@@ -3,25 +3,24 @@
 namespace Laravel\Cashier\Tests;
 
 use Carbon\Carbon;
-use Braintree_Configuration;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Billable;
-use PHPUnit\Framework\TestCase;
-use Illuminate\Database\Schema\Builder;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\ConnectionInterface;
-use Illuminate\Database\Capsule\Manager as DB;
-use Illuminate\Database\Eloquent\Model as Eloquent;
 use Laravel\Cashier\Http\Controllers\WebhookController;
+use PHPUnit\Framework\TestCase;
 
 class CashierTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
-        Braintree_Configuration::environment('sandbox');
-        Braintree_Configuration::merchantId(getenv('BRAINTREE_MERCHANT_ID'));
-        Braintree_Configuration::publicKey(getenv('BRAINTREE_PUBLIC_KEY'));
-        Braintree_Configuration::privateKey(getenv('BRAINTREE_PRIVATE_KEY'));
+        \Braintree\Configuration::environment('sandbox');
+        \Braintree\Configuration::merchantId(getenv('BRAINTREE_MERCHANT_ID'));
+        \Braintree\Configuration::publicKey(getenv('BRAINTREE_PUBLIC_KEY'));
+        \Braintree\Configuration::privateKey(getenv('BRAINTREE_PRIVATE_KEY'));
 
         Eloquent::unguard();
 
@@ -57,7 +56,7 @@ class CashierTest extends TestCase
         });
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->schema()->drop('users');
         $this->schema()->drop('subscriptions');
